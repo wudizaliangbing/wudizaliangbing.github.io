@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Gwolf">
+    
+    <title>
+        
+            Javascript内功修炼-this指向 |
+        
+        Gwolf&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/favicon.jpg">
+    
+    
+<link rel="stylesheet" href="/font/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/brands.min.css">
+
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#0066cc","title":"Gwolf's Blog","author":"Gwolf","avatar":"/images/favicon.jpg","logo":"/images/favicon.jpg","favicon":"/images/favicon.jpg"},"menu":{"Home":"/","Archives":"/archives","Tags":"/tags","About":"/about"},"first_screen":{"enable":false,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":false},"social_contact":{"enable":false,"links":{"github":null,"weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"facebook":null,"email":null}},"scroll":{"progress_bar":false,"percent":false,"hide_header":false},"home":{"category":false,"tag":true,"announcement":null},"post":{"author_badge":{"enable":false,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":true,"min2read":false},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false,"share":false,"reward":{"enable":true,"img_link":"/images/dashang.jpg","text":"请作者喝咖啡"}},"code_block":{"tools":{"enable":false,"style":"default"},"highlight_theme":"default"},"toc":{"enable":true,"number":false,"expand_all":true,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":false,"site_uv":false,"site_pv":false,"page_pv":false}},"local_search":{"enable":false,"preload":false},"comment":{"enable":false,"use":"valine","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.21"},"waline":{"server_url":null,"reaction":false,"version":2},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":false},"cdn":{"enable":false,"provider":"jsdelivr"},"pjax":{"enable":true},"footer":{"since":2020,"word_count":false,"icp":{"enable":false,"record_code":null,"url":"https://beian.miit.gov.cn"},"site_deploy":{"enable":false,"provider":"github","url":null},"shields_style":{"enable":false,"custom":[{"link_url":null,"img_url":null}]}},"inject":{"enable":false,"css":[null],"js":[null]},"version":"4.0.0"}
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"}
+    KEEP.language_code_block = {"copy":"Copy code","copied":"Copied","fold":"Fold code block","folded":"Folded"}
+    KEEP.language_copy_copyright = {"copy":"Copy copyright info","copied":"Copied","title":"Original article title","author":"Original article author","link":"Original article link"}
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+<main class="page-container border-box">
+
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/favicon.jpg">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               Gwolf&#39;s Blog
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/tags"
+                            >
+                                TAGS
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/tags">TAGS</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    <div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+
+        <div class="article-content-container border-box">
+
+            
+
+            <div class="article-content-bottom border-box">
+                
+                    <div class="article-title">
+                        Javascript内功修炼-this指向
+                    </div>
+                
+
+                
+                    <div class="article-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/favicon.jpg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author">
+                                <span class="name">Gwolf</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="article-meta-info-container border-box post">
+    <div class="article-meta-info border-box">
+        
+
+
+        
+            <span class="meta-info-item article-create-date">
+                <i class="icon fa-solid fa-calendar-check"></i>&nbsp;
+                <span class="pc">2020-08-03 22:34:59</span>
+                <span class="mobile">2020-08-03 22:34</span>
+            </span>
+
+            <span class="meta-info-item article-update-date">
+                <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                <span class="pc" data-updated="Mon Aug 03 2020 23:34:59 GMT+0800">2020-08-03 23:34:59</span>
+            </span>
+        
+
+        
+
+        
+            <span class="article-tag meta-info-item border-box">
+                <i class="icon fas fa-tags"></i>&nbsp;
+                <ul class="article-tag-ul">
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/Javascript/">Javascript</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+            <span class="meta-info-item article-wordcount">
+                <i class="icon fas fa-file-word"></i>&nbsp;<span>1.8k Words</span>
+            </span>
+        
+        
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="article-content keep-markdown-body">
+                    
+
+                    <h1 id="this-指向谁？"><a href="#this-指向谁？" class="headerlink" title="this 指向谁？"></a>this 指向谁？</h1><p>多数情况下，this 指向调用它所在方法的那个对象。</p>
+<p><strong>说得更通俗点， 谁调的函数，this 就归谁。</strong> 当调用方法没有明确对象时，this 就指向全局对象。在浏览器中，指向 window；在 Node 中，指向 Global。（严格模式下，指向 undefined）</p>
+<p><strong>this 的指向是在调用时决定的，而不是在书写时决定的。这点和闭包恰恰相反。</strong></p>
+<h2 id="区分-“声明位置”-与-“调用位置”"><a href="#区分-“声明位置”-与-“调用位置”" class="headerlink" title="区分 “声明位置” 与 “调用位置”"></a>区分 “声明位置” 与 “调用位置”</h2><p>js 是词法作用域模型，无论我是一个对象也好，一个方法也好，它的生命周期只和我们声明它的位置有关。我把它写在哪个位置，它就活在哪个位置。</p>
+<p>来看这样一个例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 声明位置</span></span><br><span class="line"><span class="keyword">var</span> me = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;Gwolf&#x27;</span>,</span><br><span class="line">  <span class="attr">hello</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`你好，我是<span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span>`</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> you = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;xiaoming&#x27;</span>,</span><br><span class="line">  <span class="attr">hello</span>: me.<span class="property">hello</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用位置</span></span><br><span class="line">me.<span class="title function_">hello</span>() <span class="comment">// Gwolf</span></span><br><span class="line">you.<span class="title function_">hello</span>() <span class="comment">// xiaoming</span></span><br></pre></td></tr></table></figure>
+<p>看到 hello 在代码中分别被 me 和 you 调用了，因此两次调用的 this 也就分别指向了 me 和 you，这没毛病。</p>
+<p>我们稍微把这个例子改一下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 声明位置</span></span><br><span class="line"><span class="keyword">var</span> me = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;Gwolf&#x27;</span>,</span><br><span class="line">  <span class="attr">hello</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`你好，我是<span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span>`</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;BigBear&#x27;</span></span><br><span class="line"><span class="keyword">var</span> hello = me.<span class="property">hello</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用位置</span></span><br><span class="line">me.<span class="title function_">hello</span>() <span class="comment">// 你好，我是Gwolf</span></span><br><span class="line"><span class="title function_">hello</span>() <span class="comment">// 你好， 我是BigBear</span></span><br></pre></td></tr></table></figure>
+<p>这里我们直接调用 hello 的时候，输出了全局的 name 变量。我们可以理解为是因为 name 和 hello 都挂在在全局对象 window 上，所以 hello () 其实等价于 window.hello ()，此时 hello 方法内部的 this 自然指向 window，于是 this.name 就等价于 window.name。这也没毛病。</p>
+<p>我们再改一下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 声明位置</span></span><br><span class="line"><span class="keyword">var</span> me = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;Gwolf&#x27;</span>,</span><br><span class="line">  <span class="attr">hello</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`你好，我是<span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span>`</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> you = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;xiaoming&#x27;</span>,</span><br><span class="line">  <span class="attr">hello</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> targetFunc = me.<span class="property">hello</span></span><br><span class="line">    <span class="title function_">targetFunc</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;BigBear&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用位置</span></span><br><span class="line">you.<span class="title function_">hello</span>()</span><br></pre></td></tr></table></figure>
+
+<p>上面这段代码，我们仔细想一下。</p>
+<p>调用位置输出的结果是 BigBear—— 竟然不是 xiaoming？的确，我们打眼看过去，直觉上肯定会认为是 you 这个对象在调用 hello 方法、进而调用 targetFunc，所以此时 this 肯定指向 you 对象啊！为啥会输出一个 window 上的 name 呢？</p>
+<p>再回顾一下开头那句话 ——“this 指向调用它所在方法的那个对象”。</p>
+<p>回头看我们例题中的 targetFunc 这个方法，之所以第一直觉会认为它的 this 应该指向 you 这个对象，其实还是因为把 “声明位置” 和 “调用位置” 混淆了。我们看到虽然 targetFunc 是在 you 对象的 hello 方法里声明的，但是在调用它的时候，我们是不是没有给 targetFunc 指明任何一个对象作为它前缀？ 所以 you 对象的 this 并不会神奇地自动传入 targetFunc 里，js 引擎仍然会认为 targetFunc 是一个挂载在 window 上的方法，进而把 this 指向 window 对象。</p>
+<p>在面试命题过程中，this 指向问题如果想往难了出， 就会像楼上这样把声明位置和调用位置故意揉在一起，考验你对两者的区分能力。 但只要能记住，“不管方法被书写在哪个位置，它的 this 只会跟着它的调用方走” 这个核心原则，就一定不会出错。</p>
+<h1 id="特殊情境下的-this-指向"><a href="#特殊情境下的-this-指向" class="headerlink" title="特殊情境下的 this 指向"></a>特殊情境下的 this 指向</h1><p>在三种特殊情境下，this 会 100% 指向 window：</p>
+<ul>
+<li>立即执行函数（IIFE）</li>
+<li>setTimeout 中传入的函数</li>
+<li>setInterval 中传入的函数<br>也就是说在做 this 指向题的时候，第一步其实倒不该是老老实实去看 this 所在的函数属于哪个对象，而是应该先定位 this 是否出现在了以上三种类型的函数里面。如果是，那么想也不想，直接去对应 window 就好了～</li>
+</ul>
+<p>来看这三种情景对应的面试题一般会怎么出：</p>
+<h2 id="立即执行函数"><a href="#立即执行函数" class="headerlink" title="立即执行函数"></a>立即执行函数</h2><p>所谓立即执行函数，就是定义后立刻调用的匿名函数（参见下面这道例题里 hello 方法的函数体里这种写法）。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;BigBear&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> me = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;Gwolf&#x27;</span>,</span><br><span class="line">  <span class="comment">// 声明位置</span></span><br><span class="line">  <span class="attr">sayHello</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`你好，我是<span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span>`</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">hello</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    (<span class="keyword">function</span>(<span class="params">cb</span>) &#123;</span><br><span class="line">      <span class="comment">// 调用位置</span></span><br><span class="line">      <span class="title function_">cb</span>()</span><br><span class="line">    &#125;)(<span class="variable language_">this</span>.<span class="property">sayHello</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">me.<span class="title function_">hello</span>() <span class="comment">// 猜下输出啥了？</span></span><br></pre></td></tr></table></figure>
+<p>经过楼上的提点，相信这里可以想都不想就说出 me.hello 的执行结果，没错，就是 BigBear ， 是 window.name 的值。</p>
+<p>但其实，即便不考虑立即执行的匿名函数这种所谓的“特殊情况”，按照我们上面的指向原则来分析，结果也是一样一样的。 立即执行函数作为一个匿名函数，在被调用的时候，往往就是直接调用，而不会（也无法）通过属性访问器（ 即 xx.xxx） 这样的形式来给它指定一个所在对象，所以它的 this 是非常确定的，就是默认的全局对象 window。</p>
+<h2 id="setTimeout-和-setInterval-中传入的函数"><a href="#setTimeout-和-setInterval-中传入的函数" class="headerlink" title="setTimeout 和 setInterval 中传入的函数"></a>setTimeout 和 setInterval 中传入的函数</h2><p>考虑到 setTimeout 和 setInterval 中函数的 this 指向机制其实是一样的，这里拿 setTimeout 来开刀就够了：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;BigBear&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> me = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;Gwolf&#x27;</span>,</span><br><span class="line">  <span class="attr">hello</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`你好，我是<span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span>`</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">me.<span class="title function_">hello</span>() <span class="comment">// 你好，我是BigBear</span></span><br></pre></td></tr></table></figure>
+<p>怎么回事？this.name 明明看起来是在 me.hello () 里被调用的，结果却输出了 window.name。 setTimeout 到底对函数做了什么？</p>
+<p>其实，所看到的延时效果（setTimeout）和定时效果（setInterval），都是在全局作用域下实现的。无论是 setTimeout 还是 setInterval 里传入的函数，都会首先被交付到全局对象手上。因此，函数中 this 的值，会被自动指向 window。</p>
+<h1 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h1><p>箭头函数中的 this 比较特别，它和严格模式、非严格模式啥的都没关系。它和闭包很相似，都是认“死理”—— 认“词法作用域”的家伙。所以说箭头函数中的 this，和你如何调用它无关，由你书写它的位置决定（和普通函数的 this 规则恰恰相反～），例如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;BigBear&#x27;</span></span><br><span class="line"><span class="keyword">var</span> me = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;Gwolf&#x27;</span>,</span><br><span class="line">  <span class="comment">// 声明位置</span></span><br><span class="line">  <span class="attr">hello</span>: <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用位置</span></span><br><span class="line">me.<span class="title function_">hello</span>() <span class="comment">// BigBear</span></span><br></pre></td></tr></table></figure>
+<p>在这个例子里，因为 this 在书写的时候，它所在的作用域是全局作用域，于是这个 this 就和全局对象绑在了一起。</p>
+<p>理解箭头函数的 this 指向规则，和理解普通函数的指向规则，需要的是两套完全相反的脑回路。当两个概念像这样剪不断理还乱、非常容易被混淆的时候，面试官就兴奋了。所以有时候箭头函数的 this 和普通函数的 this 放在一起考，那就是另外一道题了：</p>
+<p>问：以下两次函数调用的输出结果是什么？为什么？</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">a</span>: <span class="number">2</span>,</span><br><span class="line">  <span class="attr">func2</span>: <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">a</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">  </span><br><span class="line">  <span class="attr">func3</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">a</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// func1</span></span><br><span class="line"><span class="keyword">var</span> <span class="title function_">func1</span>  = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">a</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// func2</span></span><br><span class="line"><span class="keyword">var</span> func2 = obj.<span class="property">func2</span></span><br><span class="line"><span class="comment">// func3</span></span><br><span class="line"><span class="keyword">var</span> func3 = obj.<span class="property">func3</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">func1</span>()</span><br><span class="line"><span class="title function_">func2</span>()</span><br><span class="line"><span class="title function_">func3</span>()</span><br><span class="line">obj.<span class="title function_">func2</span>()</span><br><span class="line">obj.<span class="title function_">func3</span>()</span><br></pre></td></tr></table></figure>
+<p>答案是 1、1、1、1、2。</p>
+
+                </div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                            <ul class="post-tags-box border-box">
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/Javascript/">Javascript</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    </div>
+                    <div>
+                        
+                    </div>
+                </div>
+
+                
+                    <div class="reward-author-container border-box flex-center">
+    <div class="reward-btn keep-button border-box flex-center tooltip tooltip-img"
+            data-tooltip-content="请作者喝咖啡"
+            data-tooltip-img-url="/images/dashang.jpg"
+            data-tooltip-img-trigger="click"
+            data-tooltip-img-style="top: -8px;"
+    >
+        <i class="fa-solid fa-hand-holding-heart"></i>
+    </div>
+</div>
+
+                
+
+                
+                    <div class="article-nav">
+                        
+                            <div class="article-prev">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2020/10/16/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E7%9A%84%E6%80%9D%E8%B7%AF%E5%8F%8A%E8%A7%A3%E6%B3%95/"
+                                   title="快速排序的思路及解法"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                      <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                            <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">快速排序的思路及解法</span>
+                                        <span class="post-nav-item">Prev posts</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                    </div>
+                
+
+                
+                    
+
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#this-%E6%8C%87%E5%90%91%E8%B0%81%EF%BC%9F"><span class="nav-text">this 指向谁？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8C%BA%E5%88%86-%E2%80%9C%E5%A3%B0%E6%98%8E%E4%BD%8D%E7%BD%AE%E2%80%9D-%E4%B8%8E-%E2%80%9C%E8%B0%83%E7%94%A8%E4%BD%8D%E7%BD%AE%E2%80%9D"><span class="nav-text">区分 “声明位置” 与 “调用位置”</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E6%83%85%E5%A2%83%E4%B8%8B%E7%9A%84-this-%E6%8C%87%E5%90%91"><span class="nav-text">特殊情境下的 this 指向</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%8B%E5%8D%B3%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0"><span class="nav-text">立即执行函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#setTimeout-%E5%92%8C-setInterval-%E4%B8%AD%E4%BC%A0%E5%85%A5%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-text">setTimeout 和 setInterval 中传入的函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0"><span class="nav-text">箭头函数</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="border-box website-info-box default">
+        
+            <div class="copyright-info info-item default">
+                &copy;&nbsp;<span>2020</span>&nbsp;-&nbsp;2023
+                
+                    &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">Gwolf</a>
+                
+            </div>
+
+            <div class="theme-info info-item default">
+                Powered by&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;&&nbsp;Theme&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+            </div>
+
+            
+
+            
+        
+
+        <div class="count-item info-item default">
+            
+
+            
+
+            
+        </div>
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="tools-list border-box">
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-toggle-theme-mode flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#this-%E6%8C%87%E5%90%91%E8%B0%81%EF%BC%9F"><span class="nav-text">this 指向谁？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8C%BA%E5%88%86-%E2%80%9C%E5%A3%B0%E6%98%8E%E4%BD%8D%E7%BD%AE%E2%80%9D-%E4%B8%8E-%E2%80%9C%E8%B0%83%E7%94%A8%E4%BD%8D%E7%BD%AE%E2%80%9D"><span class="nav-text">区分 “声明位置” 与 “调用位置”</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E6%83%85%E5%A2%83%E4%B8%8B%E7%9A%84-this-%E6%8C%87%E5%90%91"><span class="nav-text">特殊情境下的 this 指向</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AB%8B%E5%8D%B3%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0"><span class="nav-text">立即执行函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#setTimeout-%E5%92%8C-setInterval-%E4%B8%AD%E4%BC%A0%E5%85%A5%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-text">setTimeout 和 setInterval 中传入的函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0"><span class="nav-text">箭头函数</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+<!-- common -->
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/toggle-theme.js"></script>
+
+<script src="/js/code-block.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+
+<!-- local-search -->
+
+
+<!-- lazyload -->
+
+
+<div class="pjax">
+    
+        <!-- post-helper -->
+        
+<script src="/js/post/post-helper.js"></script>
+
+
+        <!-- toc -->
+        
+            
+<script src="/js/post/toc.js"></script>
+
+        
+
+        <!-- copyright-info -->
+        
+
+        <!-- share -->
+        
+    
+
+    <!-- category-page -->
+    
+
+    <!-- links-page -->
+    
+
+    <!-- photos-page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>

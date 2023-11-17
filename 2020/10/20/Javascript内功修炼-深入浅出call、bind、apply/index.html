@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Gwolf">
+    
+    <title>
+        
+            Javascript内功修炼-深入浅出call、bind、apply |
+        
+        Gwolf&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link rel="shortcut icon" href="/images/favicon.jpg">
+    
+    
+<link rel="stylesheet" href="/font/css/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/regular.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/solid.min.css">
+
+    
+<link rel="stylesheet" href="/font/css/brands.min.css">
+
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"en"}
+    KEEP.theme_config = {"base_info":{"primary_color":"#0066cc","title":"Gwolf's Blog","author":"Gwolf","avatar":"/images/favicon.jpg","logo":"/images/favicon.jpg","favicon":"/images/favicon.jpg"},"menu":{"Home":"/","Archives":"/archives","Tags":"/tags","About":"/about"},"first_screen":{"enable":false,"background_img":"/images/bg.svg","background_img_dark":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":false},"social_contact":{"enable":false,"links":{"github":null,"weixin":null,"qq":null,"weibo":null,"zhihu":null,"twitter":null,"facebook":null,"email":null}},"scroll":{"progress_bar":false,"percent":false,"hide_header":false},"home":{"category":false,"tag":true,"announcement":null},"post":{"author_badge":{"enable":false,"level_badge":true,"custom_badge":["One","Two","Three"]},"word_count":{"wordcount":true,"min2read":false},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false,"share":false,"reward":{"enable":true,"img_link":"/images/dashang.jpg","text":"请作者喝咖啡"}},"code_block":{"tools":{"enable":false,"style":"default"},"highlight_theme":"default"},"toc":{"enable":true,"number":false,"expand_all":true,"init_open":true,"layout":"right"},"website_count":{"busuanzi_count":{"enable":false,"site_uv":false,"site_pv":false,"page_pv":false}},"local_search":{"enable":false,"preload":false},"comment":{"enable":false,"use":"valine","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.21"},"waline":{"server_url":null,"reaction":false,"version":2},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false},"artalk":{"server":null},"disqus":{"shortname":null}},"rss":{"enable":false},"lazyload":{"enable":false},"cdn":{"enable":false,"provider":"jsdelivr"},"pjax":{"enable":true},"footer":{"since":2020,"word_count":false,"icp":{"enable":false,"record_code":null,"url":"https://beian.miit.gov.cn"},"site_deploy":{"enable":false,"provider":"github","url":null},"shields_style":{"enable":false,"custom":[{"link_url":null,"img_url":null}]}},"inject":{"enable":false,"css":[null],"js":[null]},"version":"4.0.0"}
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"}
+    KEEP.language_code_block = {"copy":"Copy code","copied":"Copied","fold":"Fold code block","folded":"Folded"}
+    KEEP.language_copy_copyright = {"copy":"Copy copyright info","copied":"Copied","title":"Original article title","author":"Original article author","link":"Original article link"}
+  </script>
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
+    
+</div>
+
+
+<main class="page-container border-box">
+
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
+            
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="/images/favicon.jpg">
+                </a>
+            
+            <a class="site-name border-box" href="/">
+               Gwolf&#39;s Blog
+            </a>
+        </div>
+
+        <div class="right border-box">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/tags"
+                            >
+                                TAGS
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/tags">TAGS</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+                
+
+                    <div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+
+        <div class="article-content-container border-box">
+
+            
+
+            <div class="article-content-bottom border-box">
+                
+                    <div class="article-title">
+                        Javascript内功修炼-深入浅出call、bind、apply
+                    </div>
+                
+
+                
+                    <div class="article-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="/images/favicon.jpg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author">
+                                <span class="name">Gwolf</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="article-meta-info-container border-box post">
+    <div class="article-meta-info border-box">
+        
+
+
+        
+            <span class="meta-info-item article-create-date">
+                <i class="icon fa-solid fa-calendar-check"></i>&nbsp;
+                <span class="pc">2020-10-20 09:55:03</span>
+                <span class="mobile">2020-10-20 09:55</span>
+            </span>
+
+            <span class="meta-info-item article-update-date">
+                <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                <span class="pc" data-updated="Tue Oct 20 2020 09:55:03 GMT+0800">2020-10-20 09:55:03</span>
+            </span>
+        
+
+        
+
+        
+            <span class="article-tag meta-info-item border-box">
+                <i class="icon fas fa-tags"></i>&nbsp;
+                <ul class="article-tag-ul">
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/Javascript/">Javascript</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+            <span class="meta-info-item article-wordcount">
+                <i class="icon fas fa-file-word"></i>&nbsp;<span>1.5k Words</span>
+            </span>
+        
+        
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="article-content keep-markdown-body">
+                    
+
+                    <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>在上文中，提到了多数情况下的this 遵循的指向机制。在另外一些情况下 this 是不遵循这个机制的。改变 this 的指向，主要有两条路：</p>
+<ol>
+<li>通过改变书写代码的方式做到（比如上一节提到的箭头函数）。</li>
+<li>显式地调用一些方法来帮忙。</li>
+</ol>
+<p>两条路都是面试经常考的。其中第一条路，因为比较简单，就先拿它开刀：</p>
+<h2 id="改变书写代码的方式，进而改变-this-的指向"><a href="#改变书写代码的方式，进而改变-this-的指向" class="headerlink" title="改变书写代码的方式，进而改变 this 的指向"></a>改变书写代码的方式，进而改变 this 的指向</h2><h3 id="唱反调的箭头函数"><a href="#唱反调的箭头函数" class="headerlink" title="唱反调的箭头函数"></a>唱反调的箭头函数</h3><p>箭头函数在上文已经讲过。这里再强调一下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  <span class="attr">a</span>: <span class="number">2</span>,</span><br><span class="line">  <span class="comment">// 声明位置</span></span><br><span class="line">  <span class="attr">showA</span>: <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">a</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用位置</span></span><br><span class="line">obj.<span class="title function_">showA</span>() <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+
+<p>当普通函数改写为箭头函数时，箭头函数的 this 会在书写阶段（即声明位置）就绑定到它父作用域的 this 上。无论后续如何调用它，都无法再为它指定目标对象 —— 因为箭头函数的 this 指向是静态的，“一次便是一生”。</p>
+<h3 id="构造函数里的-this"><a href="#构造函数里的-this" class="headerlink" title="构造函数里的 this"></a>构造函数里的 this</h3><p>当使用构造函数去 new 一个实例的时候：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name</span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">name</span> = name</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;Gwolf&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>构造函数里面的 this 会绑定到 new 出来的这个对象上：<br><img src="/images/webcomponent-13.webp" alt="图13"></p>
+<h2 id="显式地调用一些方法来帮忙"><a href="#显式地调用一些方法来帮忙" class="headerlink" title="显式地调用一些方法来帮忙"></a>显式地调用一些方法来帮忙</h2><p>改变 this 指向，常用的是 call、 apply 和 bind 方法。</p>
+<p>考虑到实际开发中改变 this 指向的场景非常多，所以这三种方法的使用在面试中考察的频率也比较高。最常见的考法，是问询三种方法的使用及区别。但很多时候，为了能够进一步试探你对 this 相关概念理解和掌握的深度， 面试官会考察你 call、apply 和 bind 的实现机制，甚至可能会要求你手写代码。</p>
+<p>因此，针对 call、 apply 和 bind，不仅要会用、会辨析，更要对其原理知根知底。接下来，将这三种方法的考察方式汇聚到两道题里面，若能掌握这两个问题，就可以做到举一反三，知一解百。</p>
+<h3 id="call、apply-和-bind-是干嘛的？如何使用？它们之间有哪些区别？"><a href="#call、apply-和-bind-是干嘛的？如何使用？它们之间有哪些区别？" class="headerlink" title="call、apply 和 bind 是干嘛的？如何使用？它们之间有哪些区别？"></a><strong>call、apply 和 bind 是干嘛的？如何使用？它们之间有哪些区别？</strong></h3><p>call、apply 和 bind 之间的区别比较大，前者在改变 this 指向的同时，也会把目标函数给执行掉；后者则只负责改造 this，不作任何执行操作。</p>
+<p>call 和 apply 之间的区别，则体现在对入参的要求上。前者只需要将目标函数的入参逐个传入即可，后者则希望入参以数组形式被传入。</p>
+<h3 id="进阶编码题：模拟实现一个-call-apply-bind-方法"><a href="#进阶编码题：模拟实现一个-call-apply-bind-方法" class="headerlink" title="进阶编码题：模拟实现一个 call&#x2F;apply&#x2F;bind 方法"></a>进阶编码题：模拟实现一个 call&#x2F;apply&#x2F;bind 方法</h3><p>这三种方法在实现层面上非常相似，以 call 方法的实现为例，带大家深入理解一下这类方法的模拟思路：</p>
+<h4 id="call-方法的模拟"><a href="#call-方法的模拟" class="headerlink" title="call 方法的模拟"></a>call 方法的模拟</h4><p>在实现 call 方法之前，先来看一个 call 的调用示范：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> me = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;Gwolf&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">showName</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">showName.<span class="title function_">call</span>(me) <span class="comment">// Gwolf</span></span><br></pre></td></tr></table></figure>
+
+<p>结合 call 表现出的特性，首先至少能想到以下两点：</p>
+<ul>
+<li>call 是可以被所有的函数继承的，所以 call 方法应该被定义在 Function.prototype 上</li>
+<li>call 方法做了两件事：</li>
+</ul>
+<p>结合这两点，一步一步来实现 call 方法。首先，改变 this 的指向：</p>
+<p>showName 在 call 方法调用后，表现得就像是 me 这个对象的一个方法一样。</p>
+<p>所以最直接的一个联想是，如果能把 showName 直接塞进 me 对象里就好了，像这样：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> me = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;Gwolf&#x27;</span>,</span><br><span class="line">  <span class="attr">showName</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>.<span class="property">name</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">me.<span class="title function_">showName</span>()</span><br></pre></td></tr></table></figure>
+
+<p>但是这样做有一个问题，因为在 call 方法里，me 是一个入参：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">showName.<span class="title function_">call</span>(me) <span class="comment">// Gwolf</span></span><br></pre></td></tr></table></figure>
+
+<p>用户在传入 me 这个对象的时候， 想做的仅仅是让 call 把 showName 里的 this 给改掉，而不想给 me 对象新增一个 showName 方法。所以说在执行完 me.showName 之后，还要记得把它给删掉。遵循这个思路，来模拟一下 call 方法（注意看注释）：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Function</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">myCall</span> = <span class="keyword">function</span>(<span class="params">context</span>) &#123;</span><br><span class="line">    <span class="comment">// step1: 把函数挂到目标对象上（这里的 this 就是要改造的的那个函数）</span></span><br><span class="line">    context.<span class="property">func</span> = <span class="variable language_">this</span></span><br><span class="line">    <span class="comment">// step2: 执行函数</span></span><br><span class="line">    context.<span class="title function_">func</span>()</span><br><span class="line">    <span class="comment">// step3: 删除 step1 中挂到目标对象上的函数，把目标对象”完璧归赵”</span></span><br><span class="line">    <span class="keyword">delete</span> context.<span class="property">func</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>到这里，已经实现了 “改变 this 的指向” 这个功能点。现在的 myCall 还需要具备读取函数入参的能力，类比于 call 的这种调用形式：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> me = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;Chris&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">showFullName</span>(<span class="params">surName</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`<span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span> <span class="subst">$&#123;surName&#125;</span>`</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">showFullName.<span class="title function_">call</span>(me, <span class="string">&#x27;Lee&#x27;</span>) <span class="comment">// Chris Lee</span></span><br></pre></td></tr></table></figure>
+
+<p>读取函数入参，具体来说其实是读取 call 方法的第二个到最后一个入参。要做到这一点，可以借助数组的扩展符（注意阅读注释，如果对 ‘…’ 这个符号感到陌生，需要补习一下 ES6 中扩展运算符相关的知识）：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// &#x27;...&#x27;这个扩展运算符可以帮助把一系列的入参变为数组</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">readArr</span>(<span class="params">...args</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(args)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">readArr</span>(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>) <span class="comment">// [1,2,3]</span></span><br></pre></td></tr></table></figure>
+
+<p>把这个逻辑用到的 myCall 方法里：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Function</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">myCall</span> = <span class="keyword">function</span>(<span class="params">context, ...args</span>) &#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;入参是&#x27;</span>, args)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>就能通过 args 这个数组拿到想要的入参了。把 args 数组代表的目标入参重新展开，传入目标方法里，就大功告成了：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Function</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">myCall</span> = <span class="keyword">function</span>(<span class="params">context, ...args</span>) &#123;</span><br><span class="line">    <span class="comment">// step1: 把函数挂到目标对象上（这里的 this 就是要改造的的那个函数）</span></span><br><span class="line">    context.<span class="property">func</span> = <span class="variable language_">this</span></span><br><span class="line">    <span class="comment">// step2: 执行函数，利用扩展运算符将数组展开</span></span><br><span class="line">    context.<span class="title function_">func</span>(...args)</span><br><span class="line">    <span class="comment">// step3: 删除 step1 中挂到目标对象上的函数，把目标对象”完璧归赵”</span></span><br><span class="line">    <span class="keyword">delete</span> context.<span class="property">func</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上，就成功模拟了一个 call 方法出来，apply和bind也有类似的实现思路，这里就不一一赘述了。</p>
+
+                </div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                            <ul class="post-tags-box border-box">
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/Javascript/">Javascript</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    </div>
+                    <div>
+                        
+                    </div>
+                </div>
+
+                
+                    <div class="reward-author-container border-box flex-center">
+    <div class="reward-btn keep-button border-box flex-center tooltip tooltip-img"
+            data-tooltip-content="请作者喝咖啡"
+            data-tooltip-img-url="/images/dashang.jpg"
+            data-tooltip-img-trigger="click"
+            data-tooltip-img-style="top: -8px;"
+    >
+        <i class="fa-solid fa-hand-holding-heart"></i>
+    </div>
+</div>
+
+                
+
+                
+                    <div class="article-nav">
+                        
+                            <div class="article-prev">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2022/03/29/Webcomponents%E5%88%9D%E6%8E%A2/"
+                                   title="Webcomponents初探"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                      <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                            <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">Webcomponents初探</span>
+                                        <span class="post-nav-item">Prev posts</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="article-next">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2020/10/16/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E7%9A%84%E6%80%9D%E8%B7%AF%E5%8F%8A%E8%A7%A3%E6%B3%95/"
+                                   title="快速排序的思路及解法"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">快速排序的思路及解法</span>
+                                        <span class="post-nav-item">Next posts</span>
+                                    </span>
+                                            <span class="right arrow-icon flex-center">
+                                      <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%B9%E5%8F%98%E4%B9%A6%E5%86%99%E4%BB%A3%E7%A0%81%E7%9A%84%E6%96%B9%E5%BC%8F%EF%BC%8C%E8%BF%9B%E8%80%8C%E6%94%B9%E5%8F%98-this-%E7%9A%84%E6%8C%87%E5%90%91"><span class="nav-text">改变书写代码的方式，进而改变 this 的指向</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%94%B1%E5%8F%8D%E8%B0%83%E7%9A%84%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0"><span class="nav-text">唱反调的箭头函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E9%87%8C%E7%9A%84-this"><span class="nav-text">构造函数里的 this</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%BE%E5%BC%8F%E5%9C%B0%E8%B0%83%E7%94%A8%E4%B8%80%E4%BA%9B%E6%96%B9%E6%B3%95%E6%9D%A5%E5%B8%AE%E5%BF%99"><span class="nav-text">显式地调用一些方法来帮忙</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#call%E3%80%81apply-%E5%92%8C-bind-%E6%98%AF%E5%B9%B2%E5%98%9B%E7%9A%84%EF%BC%9F%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%EF%BC%9F%E5%AE%83%E4%BB%AC%E4%B9%8B%E9%97%B4%E6%9C%89%E5%93%AA%E4%BA%9B%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-text">call、apply 和 bind 是干嘛的？如何使用？它们之间有哪些区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E9%98%B6%E7%BC%96%E7%A0%81%E9%A2%98%EF%BC%9A%E6%A8%A1%E6%8B%9F%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA-call-apply-bind-%E6%96%B9%E6%B3%95"><span class="nav-text">进阶编码题：模拟实现一个 call&#x2F;apply&#x2F;bind 方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#call-%E6%96%B9%E6%B3%95%E7%9A%84%E6%A8%A1%E6%8B%9F"><span class="nav-text">call 方法的模拟</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="border-box website-info-box default">
+        
+            <div class="copyright-info info-item default">
+                &copy;&nbsp;<span>2020</span>&nbsp;-&nbsp;2023
+                
+                    &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">Gwolf</a>
+                
+            </div>
+
+            <div class="theme-info info-item default">
+                Powered by&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;&&nbsp;Theme&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
+            </div>
+
+            
+
+            
+        
+
+        <div class="count-item info-item default">
+            
+
+            
+
+            
+        </div>
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="tools-list border-box">
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-toggle-theme-mode flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
+    </div>
+
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
+</div>
+
+
+    <!-- local search -->
+    
+
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E5%89%8D%E9%9D%A2"><span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%B9%E5%8F%98%E4%B9%A6%E5%86%99%E4%BB%A3%E7%A0%81%E7%9A%84%E6%96%B9%E5%BC%8F%EF%BC%8C%E8%BF%9B%E8%80%8C%E6%94%B9%E5%8F%98-this-%E7%9A%84%E6%8C%87%E5%90%91"><span class="nav-text">改变书写代码的方式，进而改变 this 的指向</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%94%B1%E5%8F%8D%E8%B0%83%E7%9A%84%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0"><span class="nav-text">唱反调的箭头函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E9%87%8C%E7%9A%84-this"><span class="nav-text">构造函数里的 this</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%BE%E5%BC%8F%E5%9C%B0%E8%B0%83%E7%94%A8%E4%B8%80%E4%BA%9B%E6%96%B9%E6%B3%95%E6%9D%A5%E5%B8%AE%E5%BF%99"><span class="nav-text">显式地调用一些方法来帮忙</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#call%E3%80%81apply-%E5%92%8C-bind-%E6%98%AF%E5%B9%B2%E5%98%9B%E7%9A%84%EF%BC%9F%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%EF%BC%9F%E5%AE%83%E4%BB%AC%E4%B9%8B%E9%97%B4%E6%9C%89%E5%93%AA%E4%BA%9B%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-text">call、apply 和 bind 是干嘛的？如何使用？它们之间有哪些区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E9%98%B6%E7%BC%96%E7%A0%81%E9%A2%98%EF%BC%9A%E6%A8%A1%E6%8B%9F%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA-call-apply-bind-%E6%96%B9%E6%B3%95"><span class="nav-text">进阶编码题：模拟实现一个 call&#x2F;apply&#x2F;bind 方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#call-%E6%96%B9%E6%B3%95%E7%9A%84%E6%A8%A1%E6%8B%9F"><span class="nav-text">call 方法的模拟</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
+</main>
+
+
+
+<!-- common -->
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/header-shrink.js"></script>
+
+<script src="/js/back2top.js"></script>
+
+<script src="/js/toggle-theme.js"></script>
+
+<script src="/js/code-block.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+
+<!-- local-search -->
+
+
+<!-- lazyload -->
+
+
+<div class="pjax">
+    
+        <!-- post-helper -->
+        
+<script src="/js/post/post-helper.js"></script>
+
+
+        <!-- toc -->
+        
+            
+<script src="/js/post/toc.js"></script>
+
+        
+
+        <!-- copyright-info -->
+        
+
+        <!-- share -->
+        
+    
+
+    <!-- category-page -->
+    
+
+    <!-- links-page -->
+    
+
+    <!-- photos-page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+    
+<script src="/js/libs/pjax.min.js"></script>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>
